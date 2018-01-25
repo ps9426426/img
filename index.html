@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		img{
+			width: 500px;
+			height: 300px;
+		}
+	</style>
+</head>
+<body>
+	<script>
+		function ajax(url){
+			return new Promise((resolve,reject)=>{
+				let xml=new XMLHttpRequest();
+				xml.open("GET",url);
+				xml.onreadystatechange=function(){
+					if(xml.readyState != 4)return;
+					if(xml.status===200){
+						resolve(xml.responseText)
+					}else{
+						reject("error")
+					}
+				}
+				xml.send(null)
+			})
+		}
+		ajax('http://localhost:8060/data').then(function(result){
+			var arr=JSON.parse(result)
+			console.log(arr);
+			[...arr].map(function(item,index){
+				console.log(item)
+				var image= new Image();
+				image.src=item.img;
+				document.body.append(image)
+			})
+		})
+	</script>
+</body>
+</html>
